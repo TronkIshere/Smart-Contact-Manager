@@ -22,6 +22,7 @@ public class User {
     private String name;
     @Column(unique = true, nullable = false)
     private String email;
+    private String password;
     @Column(length = 10000)
     private String about;
     @Column(length = 10000)
@@ -32,6 +33,7 @@ public class User {
     private boolean emailVerified = false;
     private boolean phoneVerified = false;
 
+    @Enumerated(value = EnumType.STRING)
     // SELF, GOOGLE, FACEBOOK, TWITTER, LINKEDIN, GITHUB
     private Providers provider = Providers.SELF;
     private String providerUserId;
