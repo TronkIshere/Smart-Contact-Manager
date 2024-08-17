@@ -1,8 +1,8 @@
-package com.project.controllers;
+package com.project.smartContactManager.controllers;
 
-import com.project.entities.User;
-import com.project.forms.UserForm;
-import com.project.services.UserService;
+import com.project.smartContactManager.entities.User;
+import com.project.smartContactManager.forms.UserForm;
+import com.project.smartContactManager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,4 +1,4 @@
-package com.project.forms;
+package com.project.smartContactManager.forms;
 
 import lombok.*;
 

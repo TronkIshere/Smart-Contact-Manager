@@ -1,10 +1,9 @@
-package com.project.repsitories;
+package com.project.smartContactManager.repsitories;
 
-import com.project.entities.User;
+import com.project.smartContactManager.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Repository

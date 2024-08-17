@@ -1,6 +1,6 @@
-package com.project.services;
+package com.project.smartContactManager.services;
 
-import com.project.entities.User;
+import com.project.smartContactManager.entities.User;
 
 import java.util.List;
 import java.util.Optional;

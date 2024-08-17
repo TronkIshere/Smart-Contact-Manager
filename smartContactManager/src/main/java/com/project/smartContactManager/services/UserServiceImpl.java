@@ -1,8 +1,9 @@
-package com.project.services;
+package com.project.smartContactManager.services;
 
-import com.project.entities.User;
-import com.project.helpers.ResourceNotFoundException;
-import com.project.repsitories.UserRepo;
+import com.project.smartContactManager.entities.User;
+import com.project.smartContactManager.helpers.ResourceNotFoundException;
+import com.project.smartContactManager.repsitories.UserRepo;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepo userRepo;
 
-    private Logger logger = (Logger) LoggerFactory.getLogger(this.getClass());
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public User saveUser(User user) {

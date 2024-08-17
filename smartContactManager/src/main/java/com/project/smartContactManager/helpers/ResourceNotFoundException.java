@@ -1,4 +1,4 @@
-package com.project.helpers;
+package com.project.smartContactManager.helpers;
 
 public class ResourceNotFoundException extends RuntimeException{
     public ResourceNotFoundException(String message){

@@ -1,4 +1,4 @@
-package com.project.entities;
+package com.project.smartContactManager.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,5 +18,6 @@ public class SocialLink {
     private String title;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 }
