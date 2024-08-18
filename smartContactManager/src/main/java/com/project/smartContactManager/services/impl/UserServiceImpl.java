@@ -1,11 +1,14 @@
-package com.project.smartContactManager.services;
+package com.project.smartContactManager.services.impl;
 
 import com.project.smartContactManager.entities.User;
+import com.project.smartContactManager.helpers.AppConstants;
 import com.project.smartContactManager.helpers.ResourceNotFoundException;
 import com.project.smartContactManager.repsitories.UserRepo;
+import com.project.smartContactManager.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +16,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepo userRepo;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -27,6 +31,10 @@ public class UserServiceImpl implements UserService{
         user.setUserId(userId);
         // password encode
         // user.setPassword(UserId);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        //set the user role
+        user.setRoleList(List.of(AppConstants.ROLE_USER));
+        logger.info(user.getProvider().toString());
         return userRepo.save(user);
     }
 
