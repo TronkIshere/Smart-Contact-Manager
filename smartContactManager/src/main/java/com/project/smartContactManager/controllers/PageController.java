@@ -2,10 +2,14 @@ package com.project.smartContactManager.controllers;
 
 import com.project.smartContactManager.entities.User;
 import com.project.smartContactManager.forms.UserForm;
+import com.project.smartContactManager.helpers.Message;
+import com.project.smartContactManager.helpers.MessageType;
 import com.project.smartContactManager.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -72,13 +76,16 @@ public class PageController {
 
     // processing register
     @RequestMapping(value = "/do-register", method = RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm) {
+    public String processRegister(@ModelAttribute UserForm userForm, BindingResult rBindingResult, HttpSession session) {
         System.out.println("Processing registration");
         // fetch form data
         // UserForm
         System.out.println(userForm);
 
         // validate form data
+        if(rBindingResult.hasErrors()){
+            return "register";
+        }
 
         // save to database
 
@@ -94,10 +101,15 @@ public class PageController {
                 "https://www.learncodewithdurgesh.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fdurgesh_sir.35c6cb78.webp&w=1920&q=75");
 
         User savedUser = userService.saveUser(user);
-
         System.out.println("user saved :");
 
         //message = "Registration Successful
+
+        //add the message
+        Message message = Message.builder().content("Register Successful").type(MessageType.green).build();
+        System.out.println("Message type: " + message.getType());
+        session.setAttribute("message", message);
+
         // redirect to login page
         return "redirect:/register";
 

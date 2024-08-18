@@ -1,7 +1,14 @@
 package com.project.smartContactManager.helpers;
 
+import lombok.*;
+
+@Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Message {
     private String content;
-    private String type;
-
+    @Builder.Default
+    private MessageType type = MessageType.blue;
 }
