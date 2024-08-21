@@ -14,5 +14,5 @@ public interface UserService {
     boolean isUserExistByEmail(String email);
     List<User> getAllUsers();
     //add more methods here related user service[logic]
-
+    User getUserByEmail(String email);
 }
