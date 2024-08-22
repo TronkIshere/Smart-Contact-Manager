@@ -2,6 +2,8 @@ package com.project.smartContactManager.repsitories;
 
 import com.project.smartContactManager.entities.Contact;
 import com.project.smartContactManager.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface ContactRepo extends JpaRepository<Contact, String> {
-    List<Contact> findByUserName(User user);
+    Page<Contact> findByUser(User user, Pageable pageable);
 
     @Query("SELECT c FROM Contact c where c.user.userId = :userId")
     List<Contact> findByUserId(@Param("userId") String userId);

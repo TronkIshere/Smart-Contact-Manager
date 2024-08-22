@@ -1,13 +1,18 @@
 package com.project.smartContactManager.services.impl;
 
 import com.project.smartContactManager.entities.Contact;
+import com.project.smartContactManager.entities.User;
 import com.project.smartContactManager.helpers.ResourceNotFoundException;
 import com.project.smartContactManager.repsitories.ContactRepo;
 import com.project.smartContactManager.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ContactServiceImpl implements ContactService {
@@ -17,7 +22,9 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact save(Contact contact) {
-        return null;
+        String contactId = UUID.randomUUID().toString();
+        contact.setId(contactId);
+        return contactRepo.save(contact);
     }
 
     @Override
@@ -50,5 +57,12 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public List<Contact> getByUserId(String userId) {
         return contactRepo.findByUserId(userId);
+    }
+
+    @Override
+    public Page<Contact> getByUser(User user, int page, int size, String sortBy, String direction) {
+        Sort sort = direction.equals("desc") ? Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
+        var pageable = PageRequest.of(page, size, sort);
+        return contactRepo.findByUser(user, pageable);
     }
 }
