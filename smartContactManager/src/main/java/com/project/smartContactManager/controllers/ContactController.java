@@ -4,22 +4,37 @@ import com.project.smartContactManager.entities.Contact;
 import com.project.smartContactManager.entities.User;
 import com.project.smartContactManager.forms.ContactForm;
 import com.project.smartContactManager.helpers.Helper;
+import com.project.smartContactManager.helpers.Message;
+import com.project.smartContactManager.helpers.MessageType;
 import com.project.smartContactManager.services.ContactService;
+import com.project.smartContactManager.services.ImageService;
 import com.project.smartContactManager.services.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/user/contacts")
 public class ContactController {
 
+    private Logger logger = LoggerFactory.getLogger(ContactController.class);
+
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private ImageService imageService;
 
     @Autowired
     private UserService userService;
@@ -33,15 +48,31 @@ public class ContactController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String saveContact(@ModelAttribute ContactForm contactForm, Authentication authentication){
+    public String saveContact(@Valid @ModelAttribute ContactForm contactForm, BindingResult result, Authentication authentication, HttpSession session){
         //process the form data
+
+        //1 validate form
+        if(result.hasErrors()){
+            session.setAttribute("message",
+                    Message
+                            .builder()
+                            .content("Please correct the following errors")
+                            .type(MessageType.red)
+                            .build());
+            return "user/add_contact";
+        }
 
         String username = Helper.getEmailOfLoggedInUser(authentication);
         //form -> contact
 
         User user = userService.getUserByEmail(username);
 
-        //process the contact picture
+        //image process
+        logger.info("file information: {}", contactForm.getContactImage().getOriginalFilename());
+
+        String filename = UUID.randomUUID().toString();
+
+        String fileURL = imageService.uploadImage(contactForm.getContactImage(), filename);
 
         Contact contact = new Contact();
         contact.setName(contactForm.getName());
@@ -53,13 +84,22 @@ public class ContactController {
         contact.setUser(user);
         contact.setLinkedInLink(contactForm.getLinkedInLink());
         contact.setWebsiteLink(contactForm.getWebsiteLink());
+        contact.setPicture(fileURL);
+        contact.setCloudinaryImagePublicId(filename);
         contactService.save(contact);
+
         System.out.println(contactForm);
 
         //set the contact picture url
 
         //set message to be displayed on the view
 
+        session.setAttribute("message",
+                Message
+                        .builder()
+                        .content("You have successfully added a new contact")
+                        .type(MessageType.green)
+                        .build());
         return "redirect:/user/contacts/add";
     }
 }
