@@ -31,4 +31,5 @@ public class ContactForm {
     private String linkedInLink;
     @ValidFile(message = "Invalid File")
     private MultipartFile contactImage;
+    private String picture;
 }

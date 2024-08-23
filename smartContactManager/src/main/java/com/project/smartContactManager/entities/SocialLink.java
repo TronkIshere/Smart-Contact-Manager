@@ -20,4 +20,7 @@ public class SocialLink {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne
+    private Contact contact;
 }
